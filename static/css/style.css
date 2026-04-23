@@ -1,0 +1,154 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #121212; 
+    font-family: Arial, sans-serif;
+    overflow-y: auto; 
+    overflow-x: hidden;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 120px 1fr 120px; /* Colunas fixas nas pontas */
+    min-height: 100vh;
+    position: relative;
+}
+
+.coluna-vermelha {
+    background-color: #CA2E31;
+    z-index: 5; /* Voltamos para 5 para não cobrir a logo */
+    position: relative;
+}
+
+.logo {
+    position: absolute; 
+    top: 0;
+    left: 120px;
+    right: 120px;
+    height: 140px;
+    background-color: white;
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 20; 
+}
+
+.logo img {  
+    height: 140px; 
+    width: auto; 
+    object-fit: contain; 
+}
+
+.curva-suporte-esq, .curva-suporte-dir {
+    position: absolute;
+    top: 0;
+    width: 90px;
+    height: 90px;
+    background-color: white;
+   
+    z-index: 21; 
+}
+
+.curva-suporte-esq { left: -90px; }
+.curva-suporte-dir { right: -90px; }
+
+.curva-suporte-esq::before, .curva-suporte-dir::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #CA2E31;
+    z-index: 22;
+}
+
+.curva-suporte-esq::before {
+    left: 0;
+    border-top-right-radius: 80px;
+}
+
+.curva-suporte-dir::before {
+    right: 0;
+    border-top-left-radius: 80px;
+}
+
+.conteudo {
+    grid-column: 2;
+    padding: 180px 20px 100px 20px; /* Padding reduzido nas laterais para ganhar espaço */
+    display: flex;
+    /* MÁGICA AQUI: Joga o grid pra esquerda e stickers pra direita */
+    justify-content: space-between; 
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.pokemon-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 270px); 
+    gap: 100px;
+    row-gap: 50px;
+}
+
+.card {
+    background-color: #d1d1d1; 
+    border-radius: 25px;
+    height: 320px; 
+    width: 320px;
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.numero {
+    position: absolute; 
+    top: -15px;          
+    left: -15px;         
+    height: 70px;       
+    z-index: 6; 
+}
+
+.pokemon-img {
+    max-width: 90%;
+    max-height: 80%;
+    object-fit: contain;
+}
+
+.card h3 {
+    margin-top: 10px;
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.coluna-stickers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* Em vez de margin-left, usamos largura fixa para o container de stickers */
+    width: 280px; 
+    z-index: 5;
+    flex-shrink: 0; /* Impede que os stickers sejam "esmagados" pelo grid */
+}
+
+.sticker-decorativo {
+    width: 100% !important; /* Ocupa os 280px definidos acima */
+    height: auto !important; 
+    filter: drop-shadow(8px 12px 15px rgba(0,0,0,0.5));
+}
+
+.sticker-family {
+    transform: rotate(5deg);
+    z-index: 6;
+}
+
+.sticker-ditto {
+    margin-top: -110px !important; 
+    z-index: 7; 
+    transform: rotate(-8deg) translateX(-10px);
+}

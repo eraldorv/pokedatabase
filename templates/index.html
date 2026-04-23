@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PokemonDB</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <aside class="coluna-vermelha esquerda"></aside>
+
+        <main class="conteudo">
+
+            <header class="logo">
+                <div class="curva-suporte-esq"></div>
+                <div class="curva-suporte-dir"></div>
+                <img src="{{ url_for('static', filename='img/logo/pokedatabaselogo.png') }}" alt="PokemonDB">
+            </header>
+
+            <section class="pokemon-grid">
+                {% for pokemon in pokemons %}
+                <div class="card">
+                    <img class="numero" src="{{ url_for('static', filename='img/numbers/' + pokemon.Numero|string + '.png') }}" alt="Número">
+                    <img class="pokemon-img" src="{{ url_for('static', filename='img/pokemon/' + pokemon.Imagem) }}" alt="{{ pokemon.Nome }}">
+                    <h3>{{ pokemon.Nome }}</h3>
+                </div>
+                {% endfor %}
+            </section>
+
+            <div class="coluna-stickers">
+                <img class="sticker-decorativo sticker-family" src="{{ url_for('static', filename='img/stickers/chuhug.png') }}" alt="Pikachu Raichu">
+                <img class="sticker-decorativo sticker-ditto" src="{{ url_for('static', filename='img/stickers/dittoheart.png') }}" alt="Ditto">
+            </div>
+
+        </main>
+
+        <aside class="coluna-vermelha direita"></aside>
+
+    </div>
+
+</body>
+</html>
