@@ -1,48 +1,32 @@
-import os
 import pymongo
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
-# Tenta pegar a URL do banco, se não existir, usa None
-MONGO_URI = os.environ.get("MONGODB_URI")
-
-db_disponivel = False
-colecao = None
-
-if MONGO_URI:
-    try:
-        conn = pymongo.MongoClient(MONGO_URI, serverSelectionTimeoutMS=2000)
-        banco = conn["pokemon"]
-        colecao = banco["kanto"]
-        conn.server_info()
-        db_disponivel = True
-    except:
-        db_disponivel = False
-else:
-    # Se estiver no seu PC (local), tenta o localhost
-    try:
-        conn = pymongo.MongoClient("mongodb://localhost:27017/", serverSelectionTimeoutMS=1000)
-        banco = conn["pokemon"]
-        colecao = banco["kanto"]
-        db_disponivel = True
-    except:
-        db_disponivel = False
+try:
+    conn = pymongo.MongoClient("mongodb://localhost:27017/")
+    banco = conn["pokemon"]
+    colecao = banco["kanto"]
+    conn.server_info() 
+    db_disponivel = True
+except Exception as e:
+    print(f"Erro ao conectar ao MongoDB local: {e}")
+    db_disponivel = False
 
 @app.route("/")
 def index():
     pokemons = []
-    if db_disponivel and colecao is not None:
+    
+    if db_disponivel:
         try:
             pokemons = list(colecao.find())
-        except:
-            pass
-            
+        except Exception as e:
+            print(f"Erro ao buscar dados: {e}")
+
     if not pokemons:
-        # Dados de backup para o site nunca dar erro 500
         pokemons = [
-            {"name": "Pikachu", "numero": 25},
-            {"name": "Bulbasaur", "numero": 1}
+            {"name": "Pikachu (Backup)", "numero": 25},
+            {"name": "Bulbasaur (Backup)", "numero": 1}
         ]
 
     for i, p in enumerate(pokemons):
@@ -50,3 +34,6 @@ def index():
             p["numero"] = i + 1
 
     return render_template("index.html", pokemons=pokemons)
+
+if __name__ == "__main__":
+    app.run(debug=True)
